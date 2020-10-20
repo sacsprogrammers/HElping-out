@@ -1,0 +1,46 @@
+query {
+  nodes(ids: ["MDEyOk9yZ2FuaXphdGlvbjcwODc1OTk2"]) {
+    id
+    __typename
+    ... on Organization {
+      name
+      auditLog(first: 3, after: "MYCURSOR") {
+        totalCount
+        edges {
+          cursor
+          AuditEntry: node {
+            ... on AuditEntry {
+              action
+              createdAt
+              ... on TeamAuditEntryData {
+                teamName
+              }
+              ... on RepositoryAuditEntryData {
+                repositoryName
+              }
+              ... on OrganizationAuditEntryData {
+                organizationName
+              }
+              memberDetails: user {
+                name
+                email
+              }
+              actor {
+                category: __typename
+                ... on User {
+                  login
+                  email
+                  name
+                }
+              }
+            }
+          }
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+      }
+    }
+  }
+}
